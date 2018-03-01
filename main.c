@@ -24,7 +24,7 @@ MIPS pc = 0;
 
 int num_instructions = 0;
 int num_cycles = 0;
-
+int num_memref = 0;
 void initRegisters(MIPS registers[]){
     int i;
     for(i = 0; i < NUM_REGS; i++)
@@ -36,6 +36,7 @@ void printRegisters() {
     char reg[8];
     printf("Number of Instructions Executed: %d\n", num_instructions);
     printf("Number of Clock Cycles: %d\n", num_cycles);
+    printf("Number of Memory References: %d\n", num_memref);
     for(i = 0; i < NUM_REGS; i++) {
         getRegString(i,reg);
         printf("%s: 0x%08X\n", reg, R[i]);
@@ -212,10 +213,34 @@ int main(){
     /* File to be ran */
     char filename[] = "countbits.mb";
     initRegisters(R);
-
+    int input;
     int memp = loadProgram(filename, mem);
 
+
+    /* Select Running Mode */
+    printf("Select Running Mode:\n");
+    printf("\tEnter '1' for simulation mode.\n");
+    printf("\tEnter '2' for step mode.\n");
+    printf("\tEnter '3' to exit.\n");
+
+
+    scanf("%i", &input);
+    fflush(stdin);
+
+
+
+    if(input == 3) {
+        exit(0);
+    }
+
     while(pc < memp){
+        if(input == 2) {
+            printf("Press enter to step through the function or q to exit.\n\n");
+            if(getchar() == "q") {
+                exit(0);
+            }
+            fflush(stdin);
+        }
         int raw_hex = mem[pc / 4];
         Instruction instruction;
         char name[8];
@@ -230,6 +255,9 @@ int main(){
         else
             num_cycles += 4;
 
+        if(name[0] == 's' || (name[0] == 'l' && strcmp(name, "lui") != 0)) {
+            num_memref++;
+        }
         /* 
         printf("\n@PC=0x%08X, Opcode=0x%02X, %c Type ", pc, instruction.opcode, instruction.type);
         if(instruction.opcode == 0x00)
@@ -237,7 +265,6 @@ int main(){
 
         printf(" (%s)", name);
         */
-
         pc += 4; 
         num_instructions++;
         execute(instruction);
