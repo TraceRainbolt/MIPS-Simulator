@@ -16,7 +16,7 @@
 
 /* Create memory and registers */
 MIPS mem[MAX_MEM_ADDR];
-MIPS registers[NUM_REGS];
+MIPS R[NUM_REGS];
 MIPS pc = 0;
 
 void initRegisters(MIPS registers[]){
@@ -25,16 +25,16 @@ void initRegisters(MIPS registers[]){
         registers[i] = 0;
 }
 
-void executeFunction(Instruction instruction){
-    switch(instruction.opcode) {
+void executeFunction(Instruction inst){
+    switch(inst.opcode) {
         case SLL:
- 
+            R[inst.rd] = R[inst.rt] << inst.shamt;
             break;
         case SRL:
-
+            R[inst.rd] = R[inst.rt] >> inst.shamt;
             break;
         case SRA:
-
+            R[inst.rd] = R[inst.rt] << inst.shamt;
             break;
         case SLLV:
 
@@ -156,7 +156,7 @@ void execute(Instruction instruction){
 int main(){
     /* File to be ran */
     char filename[] = "testcase2.mb";
-    initRegisters(registers);
+    initRegisters(R);
 
     int memp = loadProgram(filename, mem);
     while(pc < memp){
@@ -165,6 +165,7 @@ int main(){
         char name[8];
 
         fetchAndDecode(&instruction, raw_hex);
+        pc += 4; 
 
         execute(instruction);
 
@@ -179,7 +180,6 @@ int main(){
         printf(" (%s)", name); 
 
         */
-        pc += 4; 
     }
   
     printf("\n");

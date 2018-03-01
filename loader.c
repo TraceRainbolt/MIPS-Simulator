@@ -234,7 +234,7 @@ void fetchAndDecode(Instruction *instruction, MIPS raw_hex){
     instruction->signext = signExtend(imm);
 
     instruction->shamt = (raw_hex >> 6) & 0x1F;
-    instruction->jump_addr = raw_hex & 0x3FFFFFF;
+    instruction->jump_addr = (raw_hex & 0x3FFFFFF) << 2;
 }
 
 int loadProgram(char *filename, MIPS mem[]){
