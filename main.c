@@ -169,7 +169,7 @@ int main(){
         execute(instruction);
 
         /**** Debug print ****** 
-        
+
         getOpName(raw_hex, name);
 
         printf("\n@PC=0x%08X, Opcode=0x%02X, %c Type ", pc, instruction.opcode, instruction.type);
@@ -178,7 +178,8 @@ int main(){
 
         printf(" (%s)", name); 
 
-        pc += 4; */
+        */
+        pc += 4; 
     }
   
     printf("\n");
