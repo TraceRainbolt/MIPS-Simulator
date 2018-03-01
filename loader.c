@@ -210,7 +210,7 @@ void getRegString(int num, char reg[8]){
 int signExtend(int instruction) {
     int value = (0x0000FFFF & instruction);
     int mask = 0x00008000;
-    if (mask & instruction) {
+    if (mask & value) {
         value += 0xFFFF0000;
     }
     return value;
@@ -231,7 +231,7 @@ void fetchAndDecode(Instruction *instruction, MIPS raw_hex){
     instruction->rd = (raw_hex >> 11) & 0x1F;
 
     instruction->imm = imm;
-    instruction->signext = signExtend(imm);
+    instruction->signext = signExtend(raw_hex);
 
     instruction->shamt = (raw_hex >> 6) & 0x1F;
     instruction->jump_addr = (raw_hex & 0x3FFFFFF) << 2;

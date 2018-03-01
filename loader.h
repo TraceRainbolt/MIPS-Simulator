@@ -68,6 +68,7 @@ typedef struct Instruction {
 int loadProgram(char *filename, MIPS mem[]);
 void fetchAndDecode(Instruction *instruction, MIPS raw_hex);
 
+void getRegString(int num, char name[8]);
 void getOpName(MIPS instruction, char name[8]);
 
 #endif
